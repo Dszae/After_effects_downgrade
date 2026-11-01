@@ -97,10 +97,17 @@ def downgrade_file(file_path: Path, target_year: int = 2024, output_path: Path =
             return False, "Could not locate 'head' chunk in file"
 
         if ext == '.ffx':
-            # In FFX, version is 4-byte int at head + 12 (head_data[4..8], byte 27)
+            # In FFX, the full 16-byte head chunk is:
+            # 00000003 000000<version> 00000001 01020000
             orig_byte = data[head_pos + 15]
             orig_yr = byte_to_year(orig_byte)
-            data[head_pos + 12:head_pos + 16] = target_byte.to_bytes(4, 'big')
+            # Patch entire 16 bytes of head data (pos+8 to pos+24) with standard AE schema version 1
+            data[head_pos + 8:head_pos + 24] = bytes([
+                0x00, 0x00, 0x00, 0x03,
+                0x00, 0x00, 0x00, target_byte,
+                0x00, 0x00, 0x00, 0x01,
+                0x01, 0x02, 0x00, 0x00
+            ])
         else:
             # In AEP, version is byte at head + 8 + 1 (head_data[1], byte 33)
             orig_byte = data[head_pos + 9]
@@ -125,7 +132,12 @@ def downgrade_file(file_path: Path, target_year: int = 2024, output_path: Path =
         out_data = bytearray(raw_text)
         # Ensure head byte is preserved
         if ext == '.ffx':
-            out_data[head_pos + 15] = target_byte
+            out_data[head_pos + 8:head_pos + 24] = bytes([
+                0x00, 0x00, 0x00, 0x03,
+                0x00, 0x00, 0x00, target_byte,
+                0x00, 0x00, 0x00, 0x01,
+                0x01, 0x02, 0x00, 0x00
+            ])
         else:
             out_data[head_pos + 9] = target_byte
 

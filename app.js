@@ -264,18 +264,30 @@ function processDowngrade(item, targetYear, options = {}) {
   const targetByte = 0x5b + (targetMajor - 20);
 
   if (item.type === 'ffx') {
-    // 1. Patch RIFX head chunk
-    if (item.headOffset !== -1) {
-      const verOffset = item.headOffset + 15; // pos + 8 (header) + 7 (index in 16-byte head data)
-      const oldVal = u8[verOffset];
-      u8[verOffset] = targetByte;
+    // Standard 16-byte head chunk matching official Adobe After Effects preset format:
+    // 00000003 000000<targetByte> 00000001 01020000
+    const targetHeadBytes = [
+      0x00, 0x00, 0x00, 0x03,
+      0x00, 0x00, 0x00, targetByte,
+      0x00, 0x00, 0x00, 0x01,
+      0x01, 0x02, 0x00, 0x00
+    ];
 
-      diffs.push({
-        offset: verOffset,
-        chunk: 'head (FFX version byte)',
-        oldByte: oldVal,
-        newByte: targetByte
-      });
+    if (item.headOffset !== -1) {
+      for (let i = 0; i < 16; i++) {
+        const off = item.headOffset + 8 + i;
+        const oldVal = u8[off];
+        const newVal = targetHeadBytes[i];
+        if (oldVal !== newVal) {
+          u8[off] = newVal;
+          diffs.push({
+            offset: off,
+            chunk: `head (offset +${i})`,
+            oldByte: oldVal,
+            newByte: newVal
+          });
+        }
+      }
     }
 
     // 2. Patch XMP metadata strings
@@ -300,9 +312,11 @@ function processDowngrade(item, targetYear, options = {}) {
       }
       if (xmpPatched > 0) {
         const patchedU8 = new TextEncoder('latin1').encode(text);
-        // Ensure head byte stays intact
+        // Ensure all 16 head bytes stay intact
         if (item.headOffset !== -1) {
-          patchedU8[item.headOffset + 15] = targetByte;
+          for (let i = 0; i < 16; i++) {
+            patchedU8[item.headOffset + 8 + i] = targetHeadBytes[i];
+          }
         }
         diffs.push({
           chunk: 'XMP Metadata XML',
