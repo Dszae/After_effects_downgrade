@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>After Effects AEP & FFX Universal Downgrader</title>
+  <meta name="description" content="Downgrade Adobe After Effects project files (.aep, .aet, .aepx) and animation presets (.ffx) to lower versions (AE 2025, 2024, 2023, 2022, 2020, CC) with 100% binary safety.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-icon">Ae</div>
+        <div>
+          <div class="brand-title">
+            AE Universal Downgrader
+            <span class="brand-badge">Foolproof v2.0</span>
+          </div>
+          <div class="brand-subtitle">Project (.aep / .aet / .aepx) & Preset (.ffx) Version Converter</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="privacy-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          100% Local / Zero-Upload
+        </div>
+        <button id="soundToggleBtn" class="btn-icon" title="Toggle Sound FX">
+          <svg id="soundIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <h1>Downgrade <span class="gradient-text">After Effects Projects & Presets</span></h1>
+      <p class="hero-desc">
+        Bypass Adobe's version-lock error cleanly. Patches binary RIFX container headers, version bitfields, and XMP metadata without corrupting keyframes, expressions, or asset links.
+      </p>
+    </section>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Left Column: Dropzone & File Queue -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- Drop Zone -->
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-icon-wrapper">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="drop-prompt">Drag & Drop After Effects Files or Folders Here</div>
+          <div class="drop-subtext">Instant offline processing directly in your browser. No file size limit.</div>
+          
+          <div class="file-format-tags">
+            <span class="format-tag aep">.AEP (Project)</span>
+            <span class="format-tag ffx">.FFX (Preset)</span>
+            <span class="format-tag aet">.AET (Template)</span>
+            <span class="format-tag aepx">.AEPX (XML)</span>
+          </div>
+
+          <div class="drop-buttons">
+            <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click(); event.stopPropagation();">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              Select Files
+            </button>
+            <button class="btn btn-secondary" onclick="document.getElementById('folderInput').click(); event.stopPropagation();">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              Select Folder (Batch Presets)
+            </button>
+          </div>
+
+          <input type="file" id="fileInput" multiple accept=".aep,.ffx,.aet,.aepx" style="display: none;">
+          <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
+        </div>
+
+        <!-- Queue Card -->
+        <div class="card">
+          <div class="queue-header">
+            <div class="queue-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              Conversion Queue
+              <span class="queue-count" id="queueCount">0</span>
+            </div>
+
+            <div class="queue-actions">
+              <button class="btn btn-sm btn-outline" id="btnClearQueue" disabled>
+                Clear Queue
+              </button>
+              <button class="btn btn-sm btn-primary" id="btnProcessAll" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Downgrade All
+              </button>
+              <button class="btn btn-sm btn-success" id="btnDownloadZip" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download All (ZIP)
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty Queue Placeholder -->
+          <div class="empty-queue" id="emptyQueue">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <p>No files loaded yet. Drop your After Effects project or preset files above!</p>
+          </div>
+
+          <!-- Active File List -->
+          <div class="file-list" id="fileList"></div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Settings & Configuration -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="card settings-panel">
+          <div class="card-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Target Version
+          </div>
+
+          <!-- Target Year -->
+          <div class="form-group">
+            <label class="form-label" for="targetYearSelect">
+              Downgrade To
+              <span class="hint">Target Release</span>
+            </label>
+            <select id="targetYearSelect" class="form-select">
+              <option value="2025">After Effects 2025 (v25.x)</option>
+              <option value="2024" selected>After Effects 2024 (v24.x) - Recommended</option>
+              <option value="2023">After Effects 2023 (v23.x)</option>
+              <option value="2022">After Effects 2022 (v22.x)</option>
+              <option value="2021">After Effects 2021 (v18.x)</option>
+              <option value="2020">After Effects 2020 (v17.x)</option>
+              <option value="2019">After Effects CC 2019 (v16.x)</option>
+              <option value="2018">After Effects CC 2018 (v15.x)</option>
+            </select>
+          </div>
+
+          <!-- Target OS Profile -->
+          <div class="form-group">
+            <label class="form-label" for="osFilter">
+              Platform Profile
+              <span class="hint">Header OS Tag</span>
+            </label>
+            <select id="osFilter" class="form-select">
+              <option value="all" selected>Universal / All Platforms</option>
+              <option value="Win">Windows (PC)</option>
+              <option value="Mac Arm 64">Apple Silicon (M1/M2/M3/M4 Mac)</option>
+              <option value="Mac">Intel Mac</option>
+            </select>
+          </div>
+
+          <!-- Exact Adobe Build Profile -->
+          <div class="form-group">
+            <label class="form-label" for="buildSelect">
+              Exact Adobe Build Signature
+              <span class="hint">139 Builds</span>
+            </label>
+            <select id="buildSelect" class="form-select">
+              <option value="">Auto (Clean Major Signature - Recommended)</option>
+            </select>
+          </div>
+
+          <!-- Deep Patching Toggle -->
+          <div class="toggle-switch-group">
+            <label class="switch-label" for="deepPatchSwitch">
+              <span class="switch-title">Deep Patching</span>
+              <span class="switch-desc">Sync RIFX head + XMP metadata XML</span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="deepPatchSwitch" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Output File Naming -->
+          <div class="form-group">
+            <label class="form-label" for="namingSelect">
+              Output Naming Pattern
+            </label>
+            <select id="namingSelect" class="form-select">
+              <option value="suffix_year" selected>[name]_AE2024.ext</option>
+              <option value="suffix_downgraded">[name]_downgraded.ext</option>
+              <option value="prefix">AE2024_[name].ext</option>
+              <option value="original">[name].ext (Overwrite)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Quick Tips Card -->
+        <div class="card" style="font-size: 0.84rem; color: var(--text-muted);">
+          <div class="card-title" style="font-size: 0.95rem; margin-bottom: 10px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            Foolproof Guarantee
+          </div>
+          <p style="margin-bottom: 8px;">
+            <strong style="color: #cbd5e1;">How it works:</strong> After Effects enforces a version lock in the big-endian <code>RIFX</code> header chunk (<code>head</code>). Our engine rewrites the internal version integer and syncs the XMP metadata without touching layer data, keyframes, or compositions.
+          </p>
+          <p>
+            <strong style="color: #cbd5e1;">Target 2024 Advice:</strong> AE 2024 (v24.x) is the sweet spot for opening presets and projects across almost any AE version without plugin deprecation crashes.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Features / Explanatory Section -->
+    <div class="info-section">
+      <div class="info-card">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ae-magenta)" stroke-width="2"><path d="M12 2v20"/><path d="m17 5-5-3-5 3"/><path d="m17 19-5 3-5-3"/></svg>
+          Complete RIFX Binary Safety
+        </h4>
+        <p>Unlike blunt string-replace scripts that corrupt FourCC chunks (such as accidentally mangling 'FaFX' or 'head' headers), our engine parses the full RIFF/RIFX structure to guarantee 100% byte integrity.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/></svg>
+          Both Projects (.aep) & Presets (.ffx)
+        </h4>
+        <p>Full support for both project files (Egg! form container) and animation preset packs (FaFX form container), as well as project templates (.aet) and XML projects (.aepx).</p>
+      </div>
+
+      <div class="info-card">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Batch & Folder Pack Downgrade
+        </h4>
+        <p>Drop whole preset packs or multiple project folders at once. Process hundreds of presets in seconds and download them individually or as a clean packaged ZIP file.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      After Effects Universal Downgrader • Built for Motion Designers & Editors • Runs 100% Client-Side in Your Browser
+    </footer>
+  </div>
+
+  <!-- Hex & Structure Inspector Modal -->
+  <div class="modal-overlay" id="inspectorModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Hex & Structure Inspector</h3>
+        <button class="btn-icon" id="modalClose">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="jszip.min.js"></script>
+  <script src="builds-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
