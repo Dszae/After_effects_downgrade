@@ -1,0 +1,5 @@
+# Robots.txt for After Effects Downgrader
+User-agent: *
+Allow: /
+
+Sitemap: https://dszae.github.io/After_effects_downgrade/sitemap.xml
