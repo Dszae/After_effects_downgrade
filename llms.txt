@@ -1,0 +1,29 @@
+# After Effects Downgrader
+> Free, open-source binary converter and metadata patcher for Adobe After Effects project files (.aep, .aet) and animation presets (.ffx). Developed by Dipesh Sapkota.
+
+## Summary
+After Effects Downgrader is a client-side web application and Python CLI tool designed to bypass Adobe After Effects' backwards compatibility locks. It enables project files and animation presets created in newer versions of After Effects (e.g., After Effects 2026, 2025) to open directly in earlier versions (e.g., After Effects 2024, 2023, 2022, 2020, CC 2018).
+
+## Key Information
+- **Official Website**: https://dszae.github.io/After_effects_downgrade/
+- **Source Code**: https://github.com/Dszae/After_effects_downgrade
+- **Author**: Dipesh Sapkota (https://www.dipeshsapkota7.com.np/)
+- **License**: MIT License
+- **Privacy**: 100% client-side execution via WebAssembly and JavaScript TypedArrays; zero files, telemetry, or metadata are transmitted to external servers.
+
+## How It Works
+1. **AEP / AET Container Parsing**:
+   - Parses the big-endian RIFX container (`Egg!` FourCC form).
+   - Locates the 20-byte `head` chunk at byte offset 24.
+   - Rewrites the major version byte at offset 33: Byte = 0x5B + (TargetYear - 20).
+   - Synchronizes Adobe XMP metadata packet string references in-place without altering stream offsets.
+
+2. **FFX Animation Preset Parsing**:
+   - Parses the big-endian RIFX container (`FaFX` FourCC form).
+   - Locates the 16-byte `head` chunk at byte offset 12.
+   - Rewrites byte 27 to match the target release major version byte.
+   - Crucially rewrites bytes 28-31 from modern Schema 5 (`0x00000005`) to Schema 1 (`0x00000001`), allowing older AE releases (e.g., AE 2024/2023) to parse effect parameter streams without dropping properties.
+
+## Limitations & Scope
+- **Version Lock Bypass vs Feature Backporting**: This tool modifies binary schema headers to bypass the application version check ("This file was created with a newer version of After Effects - time to upgrade your application!"). It does not backport features or third-party plugins that do not exist in the older After Effects release.
+- **Layer Selection Requirement**: When applying presets containing `ADBE Effect Parade`, After Effects requires an active layer (e.g., Adjustment Layer or Solid) to be selected in the composition timeline.

@@ -2,4 +2,19 @@
 User-agent: *
 Allow: /
 
+# AI & LLM Crawlers (GEO / AEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 Sitemap: https://dszae.github.io/After_effects_downgrade/sitemap.xml
+
+

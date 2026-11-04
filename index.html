@@ -87,6 +87,33 @@
   }
   </script>
 
+  <!-- Structured Data: HowTo (AEO Rich Snippet) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Downgrade an After Effects Project (.aep) or Preset (.ffx)",
+    "description": "Step-by-step instructions to convert newer After Effects files to open in older versions using After Effects Downgrader.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Select Your File",
+        "text": "Drop your .aep project file, .aet template, or .ffx animation preset into the After Effects Downgrader dropzone."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Choose Target After Effects Version",
+        "text": "Select your installed target version of After Effects (such as 2024, 2023, 2022, or CC 2018) from the dropdown."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download and Open",
+        "text": "Click Downgrade to immediately rewrite the RIFX container version byte and XMP metadata, then download and open the project directly in your installed After Effects release."
+      }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
