@@ -731,9 +731,16 @@ input:checked + .slider:before {
   align-items: center;
   gap: 8px;
 }
-.footer-creator strong {
+.creator-link {
   color: var(--text-primary);
   font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border-subtle);
+  transition: all 0.15s ease;
+}
+.creator-link:hover {
+  color: #fff;
+  border-bottom-color: var(--text-primary);
 }
 .footer-dot {
   color: var(--text-muted);
@@ -746,17 +753,28 @@ input:checked + .slider:before {
 .footer-socials {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   flex-wrap: wrap;
 }
-.footer-socials a {
+.social-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-hairline);
   color: var(--text-secondary);
+  transition: all 0.16s var(--ease);
   text-decoration: none;
-  font-size: 12px;
-  transition: color 0.15s ease;
 }
-.footer-socials a:hover {
+.social-icon-btn:hover {
+  background: var(--bg-raised);
+  border-color: var(--border-subtle);
   color: var(--text-primary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  transform: translateY(-1px);
+}
+.social-icon-btn svg {
+  display: block;
 }
