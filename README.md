@@ -197,6 +197,19 @@ See [`SECURITY.md`](SECURITY.md) for our full security and privacy policy.
 
 ---
 
+## Author
+
+Created and maintained by **Dipesh Sapkota**:
+
+- **Portfolio**: [dipeshsapkota7.com.np](https://www.dipeshsapkota7.com.np/)
+- **GitHub**: [@Dszae](https://github.com/Dszae)
+- **Instagram**: [@dsz.ae](https://instagram.com/dsz.ae)
+- **X (Twitter)**: [@dszAe18](https://x.com/dszAe18)
+- **YouTube**: [@dsz.ae](https://youtube.com/@dsz.ae)
+- **LinkedIn**: [dipeshsapkota7](https://linkedin.com/in/dipeshsapkota7)
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

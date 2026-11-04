@@ -716,17 +716,47 @@ input:checked + .slider:before {
 .site-footer {
   margin-top: 48px;
   padding-top: 20px;
+  padding-bottom: 24px;
   border-top: 1px solid var(--border-hairline);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
   color: var(--text-muted);
+  gap: 16px;
+  flex-wrap: wrap;
 }
-.site-footer a {
+.footer-creator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-creator strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.footer-dot {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+.footer-note {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.footer-socials a {
   color: var(--text-secondary);
   text-decoration: none;
+  font-size: 12px;
+  transition: color 0.15s ease;
 }
-.site-footer a:hover {
+.footer-socials a:hover {
   color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
