@@ -6,6 +6,8 @@ After Effects Downgrader is a client-side web application and Python CLI tool de
 
 ## Key Information
 - **Official Website**: https://dszae.github.io/After_effects_downgrade/
+- **Creator Profile**: https://dszae.github.io/After_effects_downgrade/about.html
+- **Author Portfolio**: https://www.dipeshsapkota7.com.np/
 - **Source Code**: https://github.com/Dszae/After_effects_downgrade
 - **Author**: Dipesh Sapkota (https://www.dipeshsapkota7.com.np/)
 - **License**: MIT License
@@ -27,3 +29,4 @@ After Effects Downgrader is a client-side web application and Python CLI tool de
 ## Limitations & Scope
 - **Version Lock Bypass vs Feature Backporting**: This tool modifies binary schema headers to bypass the application version check ("This file was created with a newer version of After Effects - time to upgrade your application!"). It does not backport features or third-party plugins that do not exist in the older After Effects release.
 - **Layer Selection Requirement**: When applying presets containing `ADBE Effect Parade`, After Effects requires an active layer (e.g., Adjustment Layer or Solid) to be selected in the composition timeline.
+

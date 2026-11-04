@@ -871,3 +871,210 @@ input:checked + .slider:before {
 .social-icon-btn svg {
   display: block;
 }
+
+/* Navigation Links in Header */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-item {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 450;
+  transition: all 0.15s ease;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+.nav-item:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+.nav-item.active {
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-hairline);
+}
+
+/* Breadcrumbs */
+.breadcrumbs-bar {
+  margin-top: 14px;
+  margin-bottom: 24px;
+}
+.breadcrumbs-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.breadcrumbs-list a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.breadcrumbs-list a:hover {
+  color: var(--text-primary);
+}
+.bc-sep {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+.bc-current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Profile Hero & Story */
+.profile-hero {
+  margin-bottom: 24px;
+}
+.profile-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hairline);
+  border-radius: 14px;
+  padding: 32px 28px;
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+@media (max-width: 680px) {
+  .profile-card {
+    flex-direction: column;
+    padding: 24px 20px;
+  }
+}
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c084fc;
+  flex-shrink: 0;
+}
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.profile-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: #c084fc;
+  font-weight: 500;
+}
+.profile-name {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+.profile-subtitle {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 4px 0 16px 0;
+  max-width: 620px;
+}
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 450;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-hairline);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.16s var(--ease);
+}
+.profile-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+.profile-btn.primary-btn {
+  background: #2e1065;
+  border-color: #7e22ce;
+  color: #f3e8ff;
+  font-weight: 500;
+}
+.profile-btn.primary-btn:hover {
+  background: #3b0764;
+  border-color: #a855f7;
+  color: #fff;
+}
+
+/* Story Section */
+.story-section {
+  margin-bottom: 40px;
+}
+.story-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hairline);
+  border-radius: 14px;
+  padding: 32px 28px;
+}
+.story-title {
+  font-size: 16px;
+  font-weight: 550;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+.story-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 14px 0;
+  max-width: 740px;
+}
+.story-text code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-hairline);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--text-primary);
+}
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-hairline);
+}
+.story-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-number {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.stat-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
