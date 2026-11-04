@@ -261,25 +261,48 @@
       </div>
     </div>
 
-    <!-- FAQ & Guide (Search Optimized) -->
+    <!-- FAQ Section -->
     <section class="faq-section">
-      <h2 class="faq-title">After Effects Downgrader Guide & FAQs</h2>
-      <div class="faq-grid">
-        <details class="faq-item">
-          <summary>How do I downgrade an After Effects (.aep) project?</summary>
-          <p>Drop your <code>.aep</code> or <code>.aet</code> file into the dropzone above, select your target version (such as After Effects 2024, 2023, or 2022), and click <strong>Downgrade</strong>. Your converted file will download immediately and open in your installed After Effects release without triggering the upgrade block dialog.</p>
+      <div class="faq-header">
+        <span class="faq-label">Documentation</span>
+        <h2 class="faq-title">Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-row">
+          <summary class="faq-summary">
+            <span>How do I downgrade an After Effects (.aep) project?</span>
+            <svg class="faq-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-content">
+            <p>Drop your <code>.aep</code> or <code>.aet</code> file into the converter, choose your target release (such as After Effects 2024 or 2023), and click Downgrade. The tool rewrites the RIFX container version byte and XMP metadata so your project opens without version upgrade prompts.</p>
+          </div>
         </details>
-        <details class="faq-item">
-          <summary>How to fix "This file was created with a newer version of After Effects"?</summary>
-          <p>This error happens because Adobe writes a container version byte into the RIFX <code>head</code> chunk. Our After Effects Downgrader rewrites this version byte and updates the embedded Adobe XMP metadata packet so earlier After Effects releases can load the project.</p>
+        <details class="faq-row">
+          <summary class="faq-summary">
+            <span>How to fix "This file was created with a newer version of After Effects"?</span>
+            <svg class="faq-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-content">
+            <p>This dialog occurs when After Effects detects a newer major build byte in the file's binary header chunk. This utility modifies that internal signature, allowing earlier versions to parse and open the composition structure.</p>
+          </div>
         </details>
-        <details class="faq-item">
-          <summary>Why does a downgraded FFX preset apply nothing in After Effects?</summary>
-          <p>When applying presets in After Effects: 1) Ensure you have an active target layer (such as an Adjustment Layer or Solid) selected in your timeline, and 2) Ensure any third-party plugins used by the preset (e.g., Boris FX Sapphire or Deep Glow) are installed on your workstation. This converter patches FFX header schema versions (Schema 5 down to Schema 1) so parameter streams load properly in AE 2024/2023.</p>
+        <details class="faq-row">
+          <summary class="faq-summary">
+            <span>Why does a downgraded .ffx preset apply nothing in After Effects?</span>
+            <svg class="faq-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-content">
+            <p>In After Effects, animation presets require an active layer (such as an Adjustment Layer or Solid) selected in your timeline before applying. Additionally, if the preset relies on third-party plugins (like Boris FX Sapphire or Deep Glow), those plugins must be installed on your workstation.</p>
+          </div>
         </details>
-        <details class="faq-item">
-          <summary>Is my After Effects project data private?</summary>
-          <p>Yes, 100%. All binary parsing and byte patching occurs strictly inside your web browser via WebAssembly and JavaScript TypedArrays. Zero files or telemetry are transmitted to any server.</p>
+        <details class="faq-row">
+          <summary class="faq-summary">
+            <span>Are project files uploaded to any server?</span>
+            <svg class="faq-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-content">
+            <p>No. Conversion is performed entirely within your browser using JavaScript TypedArrays and WebAssembly. Your files, composition data, and assets never leave your local machine.</p>
+          </div>
         </details>
       </div>
     </section>
