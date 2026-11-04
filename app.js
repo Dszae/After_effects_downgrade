@@ -21,7 +21,7 @@ const fileQueue = [];
 let isProcessingAll = false;
 let soundEnabled = true;
 
-// Sound generator using Web Audio API
+// Sound generator using Web Audio API (subtle, non-intrusive)
 const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
 
 function playAudio(type = 'click') {
@@ -36,21 +36,20 @@ function playAudio(type = 'click') {
 
     if (type === 'click') {
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, now);
-      osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.exponentialRampToValueAtTime(220, now + 0.03);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.03);
       osc.start(now);
-      osc.stop(now + 0.05);
+      osc.stop(now + 0.03);
     } else if (type === 'success') {
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(523.25, now); // C5
-      osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
-      osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.setValueAtTime(659.25, now + 0.06);
+      gain.gain.setValueAtTime(0.05, now);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.14);
       osc.start(now);
-      osc.stop(now + 0.35);
+      osc.stop(now + 0.14);
     }
   } catch (e) {
     console.debug('Audio playback skipped:', e);
@@ -580,41 +579,37 @@ document.addEventListener('DOMContentLoaded', () => {
     fileList.innerHTML = '';
     fileQueue.forEach(item => {
       const el = document.createElement('div');
-      el.className = `file-item ${item.status}`;
+      el.className = 'file-row';
       el.id = item.id;
 
       const sizeStr = formatBytes(item.size);
       const isDone = item.status === 'success';
 
+      let statusText = 'Ready';
+      if (item.status === 'processing') statusText = 'Processing';
+      else if (item.status === 'success') statusText = 'Complete';
+      else if (item.status === 'error') statusText = 'Failed';
+
       el.innerHTML = `
-        <div class="file-badge ${item.type}">${item.type.toUpperCase()}</div>
-        <div class="file-details">
-          <div class="file-name" title="${item.file.name}">${item.file.name}</div>
-          <div class="file-meta">
+        <span class="file-ext">${item.type}</span>
+        <div class="file-meta-col">
+          <div class="file-title" title="${item.file.name}">${item.file.name}</div>
+          <div class="file-submeta">
             <span>${sizeStr}</span>
-            <span class="version-pill source">Source: ${item.detectedVersion}</span>
-            <span class="version-pill target">Target: AE ${item.targetYear}</span>
-          </div>
-          <div class="item-progress-bar" style="display: ${item.status === 'processing' ? 'block' : 'none'};">
-            <div class="item-progress-fill" style="width: ${item.status === 'processing' ? '70%' : '100%'}"></div>
+            <span class="tag-version source">${item.detectedVersion}</span>
+            <span>&rarr;</span>
+            <span class="tag-version target">AE ${item.targetYear}</span>
           </div>
         </div>
-        <div class="file-status">
-          <span class="status-pill status-${item.status}">
-            ${item.status === 'ready' ? 'Ready' : ''}
-            ${item.status === 'processing' ? 'Downgrading...' : ''}
-            ${item.status === 'success' ? '✓ Downgraded' : ''}
-            ${item.status === 'error' ? '⚠ Failed' : ''}
-          </span>
+        <div class="file-status-col">
+          <span class="status-label ${item.status}">${statusText}</span>
         </div>
-        <div class="file-actions">
+        <div class="file-controls">
           ${isDone ? `
-            <button class="btn btn-sm btn-outline btn-inspect" data-id="${item.id}" title="Inspect Hex & Structure">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <button class="btn btn-sm btn-secondary btn-inspect" data-id="${item.id}" title="Inspect binary differences">
               Inspect
             </button>
-            <button class="btn btn-sm btn-success btn-download" data-id="${item.id}" title="Download File">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <button class="btn btn-sm btn-primary btn-download" data-id="${item.id}" title="Download modified file">
               Download
             </button>
           ` : `
@@ -622,8 +617,8 @@ document.addEventListener('DOMContentLoaded', () => {
               Downgrade
             </button>
           `}
-          <button class="btn-icon btn-remove" data-id="${item.id}" title="Remove file" style="width: 32px; height: 32px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <button class="btn-icon btn-remove" data-id="${item.id}" title="Remove from queue">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
       `;
@@ -783,37 +778,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Inspector Modal
   function openInspectorModal(item) {
     playAudio('click');
-    modalTitle.textContent = `Hex & Structure Inspector: ${item.file.name}`;
+    modalTitle.textContent = `${item.file.name} · Binary differences`;
 
     let diffsHtml = '';
     if (item.diffs && item.diffs.length > 0) {
       diffsHtml = `
-        <div style="font-weight: 600; color: #a78bfa; margin-bottom: 8px;">Applied Binary Patches:</div>
-        <table style="width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 16px;">
+        <div style="font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px;">Byte modifications</div>
+        <table class="hex-table" style="margin-bottom: 12px;">
           <thead>
-            <tr style="text-align: left; border-bottom: 1px solid var(--border-subtle); color: var(--text-muted);">
-              <th style="padding: 6px;">Target Element</th>
-              <th style="padding: 6px;">Offset (dec / hex)</th>
-              <th style="padding: 6px;">Original Value</th>
-              <th style="padding: 6px;">Downgraded Value</th>
+            <tr>
+              <th>Target</th>
+              <th>Offset</th>
+              <th>Original</th>
+              <th>Patched</th>
             </tr>
           </thead>
           <tbody>
             ${item.diffs.map(d => {
               if (d.offset !== undefined) {
                 return `
-                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: 8px 6px; color: #e2e8f0;">${d.chunk}</td>
-                    <td style="padding: 8px 6px; color: #94a3b8;">${d.offset} (0x${d.offset.toString(16).toUpperCase()})</td>
-                    <td style="padding: 8px 6px;"><span class="hex-highlight-old">0x${d.oldByte.toString(16).padStart(2, '0').toUpperCase()}</span></td>
-                    <td style="padding: 8px 6px;"><span class="hex-highlight-new">0x${d.newByte.toString(16).padStart(2, '0').toUpperCase()}</span></td>
+                  <tr>
+                    <td>${d.chunk}</td>
+                    <td>0x${d.offset.toString(16).toUpperCase()} (${d.offset})</td>
+                    <td><span class="diff-old">0x${d.oldByte.toString(16).padStart(2, '0').toUpperCase()}</span></td>
+                    <td><span class="diff-new">0x${d.newByte.toString(16).padStart(2, '0').toUpperCase()}</span></td>
                   </tr>
                 `;
               } else {
                 return `
-                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: 8px 6px; color: #e2e8f0;">${d.chunk}</td>
-                    <td colspan="3" style="padding: 8px 6px; color: #34d399;">${d.description}</td>
+                  <tr>
+                    <td>${d.chunk}</td>
+                    <td colspan="3" style="color: var(--color-success);">${d.description}</td>
                   </tr>
                 `;
               }
@@ -832,25 +827,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const newSlice = item.resultData.slice(start, end);
 
       hexViewHtml = `
-        <div style="font-weight: 600; color: #38bdf8; margin-bottom: 8px;">Binary Chunk Preview (Offset 0x${start.toString(16).toUpperCase()} .. 0x${end.toString(16).toUpperCase()}):</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div style="font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px;">
+          Hex preview (0x${start.toString(16).toUpperCase()} &ndash; 0x${end.toString(16).toUpperCase()})
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
           <div>
-            <div style="font-size: 0.75rem; color: #fca5a5; margin-bottom: 4px;">Original Binary:</div>
-            <div class="hex-box">${formatHexDump(origSlice, start, item.diffs.map(d => d.offset))}</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-family: var(--font-mono);">Original</div>
+            <div class="hex-dump-box">${formatHexDump(origSlice, start, item.diffs.map(d => d.offset))}</div>
           </div>
           <div>
-            <div style="font-size: 0.75rem; color: #86efac; margin-bottom: 4px;">Patched Binary (AE ${item.targetYear}):</div>
-            <div class="hex-box">${formatHexDump(newSlice, start, item.diffs.map(d => d.offset), true)}</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-family: var(--font-mono);">Patched (AE ${item.targetYear})</div>
+            <div class="hex-dump-box">${formatHexDump(newSlice, start, item.diffs.map(d => d.offset), true)}</div>
           </div>
         </div>
       `;
     }
 
     modalBody.innerHTML = `
-      <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 0.85rem;">
-        <div><strong>Container Format:</strong> ${item.format}</div>
-        <div><strong>Original Version:</strong> <span style="color: #fca5a5;">${item.detectedVersion}</span></div>
-        <div><strong>Target Version:</strong> <span style="color: #86efac;">AE ${item.targetYear}</span></div>
+      <div style="display: flex; gap: 16px; margin-bottom: 8px; font-size: 12px; font-family: var(--font-mono);">
+        <div><span style="color: var(--text-muted);">Format:</span> ${item.format}</div>
+        <div><span style="color: var(--text-muted);">Original:</span> ${item.detectedVersion}</div>
+        <div><span style="color: var(--text-muted);">Target:</span> AE ${item.targetYear}</div>
       </div>
       ${diffsHtml}
       ${hexViewHtml}
@@ -869,13 +866,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMod = modifiedOffsets.includes(curOff);
         const hex = b.toString(16).padStart(2, '0').toUpperCase();
         if (isMod) {
-          return isNew ? `<span class="hex-highlight-new">${hex}</span>` : `<span class="hex-highlight-old">${hex}</span>`;
+          return isNew ? `<span class="diff-new">${hex}</span>` : `<span class="diff-old">${hex}</span>`;
         }
         return hex;
       }).join(' ');
 
       const ascii = Array.from(slice).map(b => (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.').join('');
-      lines.push(`${lineOffset}:  ${hexParts.padEnd(55, ' ')} | ${ascii}`);
+      lines.push(`${lineOffset}:  ${hexParts.padEnd(52, ' ')} | ${ascii}`);
     }
     return lines.join('\n');
   }
