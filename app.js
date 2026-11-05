@@ -447,8 +447,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const osFilter = document.getElementById('osFilter');
   const deepPatchSwitch = document.getElementById('deepPatchSwitch');
   const namingSelect = document.getElementById('namingSelect');
-  const soundToggleBtn = document.getElementById('soundToggleBtn');
-  const soundIcon = document.getElementById('soundIcon');
 
   // Modal elements
   const inspectorModal = document.getElementById('inspectorModal');
@@ -478,82 +476,85 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   populateBuilds();
-  targetYearSelect.addEventListener('change', populateBuilds);
-  osFilter.addEventListener('change', populateBuilds);
-
-  // Sound toggle
-  soundToggleBtn.addEventListener('click', () => {
-    soundEnabled = !soundEnabled;
-    soundToggleBtn.title = soundEnabled ? 'Sound FX: Enabled' : 'Sound FX: Muted';
-    soundToggleBtn.style.opacity = soundEnabled ? '1' : '0.5';
-    playAudio('click');
-  });
+  if (targetYearSelect) targetYearSelect.addEventListener('change', populateBuilds);
+  if (osFilter) osFilter.addEventListener('change', populateBuilds);
 
   // Drag and drop handlers
-  ['dragenter', 'dragover'].forEach(eventName => {
-    dropZone.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
+  if (dropZone) {
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
     });
-  });
 
-  ['dragleave', 'drop'].forEach(eventName => {
-    dropZone.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      });
     });
-  });
 
-  dropZone.addEventListener('drop', (e) => {
-    const files = Array.from(e.dataTransfer.files);
-    handleAddedFiles(files);
-  });
+    dropZone.addEventListener('drop', (e) => {
+      const files = Array.from(e.dataTransfer.files);
+      handleAddedFiles(files);
+    });
 
-  dropZone.addEventListener('click', (e) => {
-    if (e.target.tagName !== 'BUTTON') {
-      fileInput.click();
-    }
-  });
+    dropZone.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON' && fileInput) {
+        fileInput.click();
+      }
+    });
+  }
 
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files.length) {
-      handleAddedFiles(Array.from(fileInput.files));
-      fileInput.value = '';
-    }
-  });
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        handleAddedFiles(Array.from(fileInput.files));
+        fileInput.value = '';
+      }
+    });
+  }
 
-  folderInput.addEventListener('change', () => {
-    if (folderInput.files.length) {
-      handleAddedFiles(Array.from(folderInput.files));
-      folderInput.value = '';
-    }
-  });
+  if (folderInput) {
+    folderInput.addEventListener('change', () => {
+      if (folderInput.files.length) {
+        handleAddedFiles(Array.from(folderInput.files));
+        folderInput.value = '';
+      }
+    });
+  }
 
   // Handle incoming files
   async function handleAddedFiles(files) {
-    playAudio('click');
-    const validExtensions = ['aep', 'ffx', 'aet', 'aepx'];
-    const filtered = files.filter(f => {
-      const ext = f.name.split('.').pop().toLowerCase();
-      return validExtensions.includes(ext);
-    });
+    try {
+      playAudio('click');
+      const validExtensions = ['aep', 'ffx', 'aet', 'aepx'];
+      const filtered = files.filter(f => {
+        const ext = f.name.split('.').pop().toLowerCase();
+        return validExtensions.includes(ext);
+      });
 
-    if (filtered.length === 0) {
-      alert('Please upload valid After Effects project (.aep, .aet, .aepx) or preset (.ffx) files.');
-      return;
+      if (filtered.length === 0) {
+        alert('Please upload valid After Effects project (.aep, .aet, .aepx) or preset (.ffx) files.');
+        return;
+      }
+
+      for (const f of filtered) {
+        const inspection = await inspectFile(f);
+        inspection.id = 'item_' + Math.random().toString(36).substr(2, 9);
+        inspection.status = 'ready'; // ready, processing, success, error
+        inspection.targetYear = parseInt(targetYearSelect.value);
+        inspection.resultData = null;
+        inspection.diffs = [];
+        fileQueue.push(inspection);
+      }
+
+      updateQueueUI();
+    } catch (err) {
+      console.error('Error handling uploaded files:', err);
+      alert('Error reading uploaded file: ' + err.message);
     }
-
-    for (const f of filtered) {
-      const inspection = await inspectFile(f);
-      inspection.id = 'item_' + Math.random().toString(36).substr(2, 9);
-      inspection.status = 'ready'; // ready, processing, success, error
-      inspection.targetYear = parseInt(targetYearSelect.value);
-      inspection.resultData = null;
-      inspection.diffs = [];
-      fileQueue.push(inspection);
-    }
-
-    updateQueueUI();
   }
 
   // Update UI queue
@@ -877,13 +878,17 @@ document.addEventListener('DOMContentLoaded', () => {
     return lines.join('\n');
   }
 
-  modalClose.addEventListener('click', () => {
-    inspectorModal.classList.remove('open');
-  });
+  if (modalClose && inspectorModal) {
+    modalClose.addEventListener('click', () => {
+      inspectorModal.classList.remove('open');
+    });
+  }
 
-  inspectorModal.addEventListener('click', (e) => {
-    if (e.target === inspectorModal) inspectorModal.classList.remove('open');
-  });
+  if (inspectorModal) {
+    inspectorModal.addEventListener('click', (e) => {
+      if (e.target === inspectorModal) inspectorModal.classList.remove('open');
+    });
+  }
 });
 
 function formatBytes(bytes, decimals = 1) {
